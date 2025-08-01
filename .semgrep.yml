@@ -1,0 +1,36 @@
+rules:
+  - id: hardcoded-api-key
+    pattern: '"AKIA[A-Z0-9]{16}"'
+    message: "Hardcoded AWS API key detected"
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-798: Use of Hard-coded Credentials"
+
+  - id: hardcoded-password
+    pattern: '"super_secret_password"'
+    message: "Hardcoded password detected"
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-259: Hardcoded Password"
+
+  - id: insecure-subprocess
+    pattern: subprocess.call($CMD, shell=True)
+    message: "Use of shell=True in subprocess can lead to command injection"
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-78: OS Command Injection"
+
+  - id: insecure-http
+    pattern: requests.get("http://$URL")
+    message: "Insecure HTTP request detected; use HTTPS instead"
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-319: Cleartext Transmission of Sensitive Information"

@@ -1,0 +1,37 @@
+name: Cloud Security Scan
+
+on: [push, pull_request]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔐 Scan for secrets with Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+
+      - name: 🛡️ tfsec - Terraform static analysis
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          working_directory: ./terraform
+
+      - name: 🔍 checkov - Terraform security scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./terraform
+
+      - name: 🔎 semgrep - Static code analysis with custom config
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: .semgrep.yml
+
+      # Optional: Slack notification after scan (requires SLACK_WEBHOOK_URL secret)
+      # - name: 📢 Send Slack Notification (optional)
+      #   if: success()
+      #   run: |
+      #     curl -X POST -H 'Content-type: application/json' \
+      #       --data '{"text":"✅ Security scan completed successfully!"}' \
+      #       ${{ secrets.SLACK_WEBHOOK_URL }}
