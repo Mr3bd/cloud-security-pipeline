@@ -1,4 +1,4 @@
-# 🔐 Cloud Security CI/CD Pipeline
+# 🔐 Cloud Security CI/CD Pipeline (Terraform)
 
 A GitHub Actions pipeline that scans your code and Infrastructure-as-Code (Terraform) for common security risks before deploying to the cloud.
 
